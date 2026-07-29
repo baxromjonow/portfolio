@@ -25,8 +25,6 @@ const initial = {
   phone2: "",
   subject: "",
   job: "",
-  group: "",
-  time: "",
   comment: "",
   website: "",
 };
@@ -40,8 +38,6 @@ const fields = [
   ["phone2", "Qo‘shimcha telefon", "+998 90 765 43 21", Phone, { maxLength: 40, inputMode: "tel" }],
   ["subject", "Qiziqadigan fanlari", "IT, matematika, ingliz tili", Sparkles, { maxLength: 200 }],
   ["job", "Kelajakdagi kasbi", "Dasturchi", UserRound, { maxLength: 120 }],
-  ["group", "Guruhi", "Frontend 01", GraduationCap, { maxLength: 80 }],
-  ["time", "Dars vaqti", "Dushanba, 15:00", CalendarDays, { maxLength: 80 }],
 ];
 
 export default function Contact() {
@@ -51,7 +47,7 @@ export default function Contact() {
   const [focused, setFocused] = useState("");
 
   const completed = useMemo(() => {
-    const keys = ["name", "birthday", "school", "address", "phone", "subject", "job", "group", "time", "comment"];
+    const keys = ["name", "birthday", "school", "address", "phone", "subject", "job", "comment"];
     return Math.round((keys.filter((key) => String(form[key]).trim()).length / keys.length) * 100);
   }, [form]);
 

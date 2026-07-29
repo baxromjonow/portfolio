@@ -39,8 +39,6 @@ export default async function handler(req, res) {
     phone2: clean(data.phone2, 40),
     subject: clean(data.subject, 200),
     job: clean(data.job, 120),
-    group: clean(data.group, 80),
-    lessonTime: clean(data.time, 80),
     comment: clean(data.comment, 1200),
   };
 
@@ -59,8 +57,6 @@ export default async function handler(req, res) {
     `☎️ <b>Qo‘shimcha telefon:</b>\n${show(fields.phone2)}`,
     `📚 <b>Qiziqadigan fanlari:</b>\n${show(fields.subject)}`,
     `💼 <b>Kelajakdagi kasbi:</b>\n${show(fields.job)}`,
-    `👥 <b>Guruhi:</b>\n${show(fields.group)}`,
-    `🕒 <b>Dars vaqti:</b>\n${show(fields.lessonTime)}`,
     `💬 <b>1-dars haqidagi fikri:</b>\n${show(fields.comment, "Fikr bildirilmagan")}`,
   ].join("\n\n");
 
