@@ -51,26 +51,21 @@ export default function Contact() {
     return Math.round((keys.filter((key) => String(form[key]).trim()).length / keys.length) * 100);
   }, [form]);
 
-  const change = (event) => {
-    setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
-  };
+  const change = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
 
   async function submit(event) {
     event.preventDefault();
     setStatus("loading");
     setError("");
-
     try {
       const response = await fetch("/api/send-telegram", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-
       const text = await response.text();
       const data = text ? JSON.parse(text) : {};
       if (!response.ok || !data.ok) throw new Error(data.message || "Yuborishda xatolik yuz berdi.");
-
       setForm(initial);
       setStatus("success");
     } catch (submitError) {
@@ -80,39 +75,50 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="relative overflow-hidden py-28">
+    <section id="contact" className="relative overflow-hidden py-24 sm:py-28">
       <div className="contact-orb contact-orb-one" />
       <div className="contact-orb contact-orb-two" />
 
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-[.68fr_1.32fr] lg:px-8">
-        <motion.div initial={{ opacity: 0, x: -35 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-          <div className="section-kicker"><Sparkles size={14} /> O‘quvchi so‘rovnomasi</div>
-          <h2 className="section-title mt-5">Kelajak sari birinchi <span className="text-gradient">qadam.</span></h2>
-          <p className="mt-6 max-w-lg leading-8 text-slate-400">
-            Ma’lumotlaringiz xavfsiz backend orqali Telegram botga yuboriladi. Javob juda tez yetib keladi.
-          </p>
+      <div className="relative mx-auto grid max-w-7xl items-stretch gap-7 px-5 lg:grid-cols-[.62fr_1.38fr] lg:px-8">
+        <motion.aside
+          initial={{ opacity: 0, x: -25 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="contact-info-card glass flex h-full min-h-[100%] flex-col rounded-[2.2rem] p-6 sm:p-8 lg:p-9"
+        >
+          <div>
+            <div className="section-kicker"><Sparkles size={14} /> O‘quvchi so‘rovnomasi</div>
+            <h2 className="mt-5 text-[clamp(2rem,3.5vw,3.5rem)] font-black leading-[1.03] tracking-[-.045em]">Kelajak sari birinchi <span className="text-gradient">qadam.</span></h2>
+            <p className="mt-5 leading-8 text-slate-400">Ma’lumotlaringiz xavfsiz backend orqali Telegram botga yuboriladi. Javob tez yetib keladi.</p>
+          </div>
 
           <div className="mt-8 space-y-4">
             {["Ma’lumot botga darhol keladi", "Forma to‘ldirish 2 daqiqadan kam", "Telefon raqamingiz ochiq saytda ko‘rinmaydi"].map((item, index) => (
-              <motion.div key={item} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="flex items-center gap-3 text-sm text-slate-300">
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-cyan/10 text-cyan"><Check size={15} /></span>{item}
+              <motion.div key={item} initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.08 }} className="flex items-center gap-3 text-sm text-slate-300">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-cyan/15 bg-cyan/10 text-cyan"><Check size={15} /></span>{item}
               </motion.div>
             ))}
           </div>
 
-          <motion.div whileHover={{ y: -5 }} className="glass mt-9 flex items-center gap-5 rounded-3xl p-6">
-            <div className="telegram-icon grid h-16 w-16 shrink-0 place-items-center rounded-2xl"><MessageCircle /></div>
-            <div><strong className="block text-lg">Tezkor qabul</strong><span className="text-sm leading-6 text-slate-400">Yuborilgan so‘rovnoma to‘g‘ridan-to‘g‘ri Telegram guruhiga keladi.</span></div>
-          </motion.div>
-        </motion.div>
+          <div className="mt-auto pt-8">
+            <div className="quick-accept-card relative overflow-hidden rounded-[1.7rem] border border-white/10 p-6">
+              <div className="quick-accept-glow" aria-hidden="true" />
+              <div className="telegram-icon relative z-10 grid h-16 w-16 place-items-center rounded-2xl"><Send size={24} /></div>
+              <div className="relative z-10 mt-5">
+                <strong className="block text-xl">Tezkor qabul</strong>
+                <span className="mt-2 block text-sm leading-6 text-slate-400">Yuborilgan so‘rovnoma to‘g‘ridan-to‘g‘ri Telegram guruhiga keladi.</span>
+              </div>
+            </div>
+          </div>
+        </motion.aside>
 
         <motion.form
-          initial={{ opacity: 0, y: 35, scale: 0.98 }}
+          initial={{ opacity: 0, y: 25, scale: 0.99 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
           onSubmit={submit}
-          className="form-shell glass relative rounded-[2.2rem] p-5 sm:p-9"
+          className="form-shell glass relative h-full rounded-[2.2rem] p-5 sm:p-8 lg:p-9"
         >
           <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div><p className="text-xs font-bold uppercase tracking-[.2em] text-cyan">Ro‘yxatdan o‘tish</p><h3 className="mt-1 text-2xl font-black">Ma’lumotlarni kiriting</h3></div>
@@ -126,7 +132,7 @@ export default function Contact() {
 
           <div className="grid gap-4 sm:grid-cols-2">
             {fields.map(([name, label, placeholder, Icon, attrs], index) => (
-              <motion.label key={name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.035 }} className="group block text-sm font-semibold text-slate-300">
+              <motion.label key={name} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.03 }} className="group block text-sm font-semibold text-slate-300">
                 <span className="flex items-center gap-2"><Icon size={15} className={focused === name ? "text-cyan" : "text-slate-500"} />{label}</span>
                 <div className="relative mt-2">
                   <input {...attrs} name={name} value={form[name]} onChange={change} onFocus={() => setFocused(name)} onBlur={() => setFocused("")} placeholder={placeholder} />
@@ -142,7 +148,7 @@ export default function Contact() {
             <span className="mt-2 block text-right text-xs text-slate-500">{form.comment.length}/1200</span>
           </label>
 
-          <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} disabled={status === "loading"} className="btn-primary submit-shine mt-3 flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl px-6 py-4 font-extrabold transition disabled:opacity-70">
+          <motion.button whileHover={{ scale: 1.006 }} whileTap={{ scale: 0.99 }} disabled={status === "loading"} className="btn-primary submit-shine mt-3 flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl px-6 py-4 font-extrabold transition disabled:opacity-70">
             {status === "loading" ? <LoaderCircle className="animate-spin" size={19} /> : <Send size={18} />}
             {status === "loading" ? "Telegramga yuborilmoqda..." : "So‘rovnomani yuborish"}
           </motion.button>
