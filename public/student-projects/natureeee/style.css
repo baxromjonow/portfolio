@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 1140px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    background-color: unset;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:active {
+    transform: translateY(2px);
+    opacity: 0.5;
+    transition: 0.3s;
+}
+
+.nav {
+    backdrop-filter: blur(3px);
+    padding: 8px 0;
+    position: fixed;
+    width: 100%;
+}
+
+.nav__box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav__list {
+    display: flex;
+    gap: 57px;
+}
+
+.nav__tel,
+.nav__link {
+    font-family: "Fustat";
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 90%;
+    color: #fff;
+}
+
+.intro {
+    background-image: url(./Images/introBg.png);
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.intro__title {
+    font-family: "Fustat";
+    font-weight: 500;
+    font-size: 96px;
+    line-height: 90%;
+    color: #fff;
+}
+
+.intro__text {
+    font-family: "Fustat";
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 140%;
+    color: #fff;
+}
+
+.btn {
+    font-family: "Fustat";
+    font-weight: 800;
+    font-size: 16px;
+    line-height: 140%;
+    color: #93EBDD;
+    backdrop-filter: blur(2px);
+    padding: 23px 84px;
+    border-radius: 40px;
+    border: 2px solid;
+    border: linear-gradient(90deg, #FFFFFF 0%, rgba(255, 255, 255, 0.1) 100%);
+    overflow: hidden;
+}
+
+.about__box {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 140px;
+}
+
+.about__card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 361px;
+    justify-content: space-between;
+}
+
+.about__text {
+    font-family: "Fustat";
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 140%;
+    color: #fff;
+}
+
+body {
+    background-color: #000;
+}
+
+.title {
+    font-family: "Fustat";
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 90%;
+    color: #93EBDD;
+    display: block;
+    width: max-content;
+    /* display: inline-block;
+    width: max-content; */
+}
+
+.title::after {
+    margin-top: 10px;
+    content: "";
+    background-color: red;
+    height: 2px;
+    display: block;
+    border-radius: 2px;
+    transition: 0.5s;
+    transform: scale(0);
+}
+
+.title:hover::after {
+    transform: scale(1);
+    transition: 0.5s;
+}
+
+.main__text {
+    font-family: "Fustat";
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 90%;
+    color: #F3F3F3;
+}
+
+.gallery {
+    margin-top: 140px;
+}
+
+.gallery__box {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.gallery__card {
+    display: flex;
+    gap: 30px;
+}
+
+.gallery__item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.project {
+    margin-top: 140px;
+}
+
+.title__box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.project__box {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.project__card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.project__right {
+    height: 275px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.right__title {
+    font-family: "Fustat";
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 90%;
+    color: #93EBDD;
+}
+
+.right__text {
+    font-family: "Fustat";
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 140%;
+    color: #B5B5B5;
+}
+
+.contact {
+    margin-top: 140px;
+}
+
+.contact__box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.contact__card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.contact__item {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.item__title {
+    font-family: "Fustat";
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 90%;
+    color: #93EBDD;
+}
+
+.item__text {
+    font-family: "Fustat";
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 90%;
+    color: #B5B5B5;
+}
+
+.footer {
+    background-color: #101010;
+    padding: 110px 0;
+    margin-top: 140px;
+}
+
+.footer__box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer__follow,
+.footer__contact,
+.footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.footer__link {
+    font-family: "Fustat";
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 90%;
+    color: #93EBDD;
+}
+
+
+
+
+
+
+.footer__text,
+.footer__tel {
+    font-family: "Fustat";
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 90%;
+    color: #fff;
+}
+
+.contact__link {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}

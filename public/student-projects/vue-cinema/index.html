@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./Images/logo.svg" type="image/x-icon">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="./Style/style.css">
+    <link rel="stylesheet" href="./Style/media.css">
+    <title>Vue Cinema</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__top">
+            <img src="./Images/film_icon.png" alt="" class="header__top__img">
+            <p class="header__top__text">See no special offer restrictions lore</p>
+        </div>
+        <nav class="nav">
+            <div class="container">
+                <div class="nav__box">
+                    <a href="#!" class="nav__logo">
+                        <img src="./Images/NavLogo.png" alt="">
+                        <span>CINEMAS</span>
+                    </a>
+                    <label for="check" class="menu">
+                        <img src="./Images/menu.png" alt="">
+                    </label>
+                    <input type="checkbox" id="check">
+                    <ul class="nav__list">
+                        <label for="check" class="close">
+                            <img src="./Images/close.png" alt="">
+                        </label>
+                        <li><a href="#film" class="nav__link"><span>Films</span></a></li>
+                        <li><a href="#widow" class="nav__link"><span>Widow</span></a></li>
+                        <li><a href="#collect" class="nav__link"><span>Collection</span></a></li>
+                        <li><a href="#series" class="nav__link"><span>Series</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="intro">
+            <div class="container">
+                <div class="intro__box">
+                    <h1 data-aos="fade-right" data-aos-duration="2000"  data-aos-delay="200" class="intro__title">Kong: Skull Island</h1>
+                    <p data-aos="fade-right" data-aos-duration="2000"  data-aos-delay="500" class="intro__text">The film takes the viewer to
+                        the 70s of the last century. The protagonist
+                        organizes
+                        an expedition to the Skull island, always covered in fog, on which King Kong was once caught to
+                        find the
+                        missing brother and some mysterious substance. During...</p>
+                    <div data-aos="fade-right" data-aos-duration="2000"  data-aos-delay="700" class="btns">
+                        <button class="btn">Watch now</button>
+                        <button class="btn">Download</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <section class="film" id="film">
+            <div class="container">
+                <h2 data-aos="fade-down" data-aos-duration="500" class="title">films</h2>
+                <div class="film__box">
+                    <div class="film__card" data-aos="zoom-in" data-aos-duration="1000">
+                        <img src="./Images/play.svg" alt="" class="play">
+                        <p class="film__time">2:14:33</p>
+                        <h3 class="film__title">Black Panther</h3>
+                        <p class="film__text">At first glance, you can decide that Wakanda is an ordinary territory of
+                            wild Africa, but this is not so. Here, in the bowels of the desert lands, there are hidden
+                            deposits of a unique metal capable of absorbing...</p>
+                    </div>
+                    <div class="film__card" data-aos="zoom-in" data-aos-duration="1000">
+                        <img src="./Images/play.svg" alt="" class="play">
+                        <p class="film__time">2:32:13</p>
+                        <h3 class="film__title">The Dark Knight</h3>
+                        <p class="film__text">Batman raises stakes in the war on crime. With the help of Lieutenant Jim
+                            Gordon and Attorney Harvey Dent, he intends to clear the streets of crime that is poisoning
+                            the city. The cooperation is effective, but soon they...</p>
+                    </div>
+                    <div class="film__card" data-aos="zoom-in" data-aos-duration="1000">
+                        <img src="./Images/play.svg" alt="" class="play">
+                        <p class="film__time">1:53:45</p>
+                        <h3 class="film__title">The Gentlemen</h3>
+                        <p class="film__text">One cunning American, from his student years, had been selling drugs, and
+                            now he came up with a scheme of illegal enrichment using the estates of an impoverished
+                            English aristocracy and made a very good fortune on ...</p>
+                    </div>
+                    <div class="film__card" data-aos="zoom-in" data-aos-duration="1000">
+                        <img src="./Images/play.svg" alt="" class="play">
+                        <p class="film__time">2:58:20</p>
+                        <h3 class="film__title">The Lord of the...</h3>
+                        <p class="film__text">Tales of Middle-earth is a chronicle of the Great War for the Ring, a war
+                            that lasted more than one thousand years. The one who owned the Ring received power over all
+                            living creatures, but was obliged to serve evil...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="widow" id="widow">
+            <div class="container">
+                <img src="./Images\/widow_title.png" alt="" class="widow__title" data-aos="fade-right" data-aos-duration="1500">
+                <p class="widow__text" data-aos="fade-right" data-aos-duration="1500" data-aos-delay="100">After the events at the Leipzig-Halle airport, Natasha was overtaken by the
+                    mistakes of the past. The Red Room again made itself felt - a program to create Widows -
+                    professional killers and spies - just like her. Natasha decides once and for all to deal with
+                    people whose efforts she herself became a Widow.</p>
+                <button class="btn widow__btn" data-aos="fade-right" data-aos-duration="1500" data-aos-delay="200">Watch now</button>
+            </div>
+            <video class="widow__video" muted autoplay src="./videos/widow.mp4"></video>
+        </section>
+        <section class="collect" id="collect">
+            <div class="container">
+                <h2 class="title" data-aos="fade-down" data-aos-duration="500">Collections</h2>
+                <div class="collect__box">
+                    <div class="collect__card" data-aos="flip-up" data-aos-duration="1000">
+                        <img src="./Images/1.png" alt="" class="collect__img">
+                        <img src="./Images/line.png" alt="" class="collect__left">
+                        <img src="./Images/line.png" alt="" class="collect__right">
+                        <a href="#!" class="collect__play">
+                            <img src="./Images/play.svg" alt="">
+                        </a>
+                        <h3 class="collect__title">All Marvel Films</h3>
+                    </div>
+                    <div class="collect__card" data-aos="flip-up" data-aos-duration="1000">
+                        <img src="./Images/2.png" alt="" class="collect__img">
+                        <img src="./Images/line.png" alt="" class="collect__left">
+                        <img src="./Images/line.png" alt="" class="collect__right">
+                        <a href="#!" class="collect__play">
+                            <img src="./Images/play.svg" alt="">
+                        </a>
+                        <h3 class="collect__title">Fast and the Furious</h3>
+                    </div>
+                    <div class="collect__card" data-aos="flip-up" data-aos-duration="1000">
+                        <img src="./Images/3.png" alt="" class="collect__img">
+                        <img src="./Images/line.png" alt="" class="collect__left">
+                        <img src="./Images/line.png" alt="" class="collect__right">
+                        <a href="#!" class="collect__play">
+                            <img src="./Images/play.svg" alt="">
+                        </a>
+                        <h3 class="collect__title">Star Wars</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="series" id="series">
+            <div class="container">
+                <h2 class="title" data-aos="fade-down" data-aos-duration="500">Series</h2>
+                <div class="series__box">
+                    <div class="series__game" data-aos="zoom-out-down" data-aos-duration="900">
+                        <h3 class="game__title">Game of Thrones</h3>
+                        <p class="game__text">The time of prosperity is drawing to a close, and the summer, which lasted
+                            almost a decade, is dying away. Around the center of power of the Seven Kingdoms, the Iron
+                            Throne, a conspiracy is ripening, and during this difficult time, the king decides to seek
+                            support from his youth friend Eddard Stark. In a world where everyone - from the king to the
+                            mercenary - is eager for power, intrigues and is ready to stick a knife in the back, there
+                            is ...</p>
+                        <button class="btn game__btn">Watch now</button>
+                    </div>
+                    <div class="series__items">
+                        <div class="series__item" data-aos="fade-right" data-aos-duration="900">
+                            <img src="./Images/play.svg" alt="" class="item__play">
+                            <h2 class="item__title">Wanda Vision</h2>
+                        </div>
+                        <div class="series__item" data-aos="fade-down" data-aos-duration="900">
+                            <img src="./Images/play.svg" alt="" class="item__play">
+                            <h2 class="item__title">The Flash</h2>
+                        </div>
+                        <div class="series__item" data-aos="fade-left" data-aos-duration="900">
+                            <img src="./Images/play.svg" alt="" class="item__play">
+                            <h2 class="item__title">The Great</h2>
+                        </div>
+                        <div class="series__item" data-aos="fade-up" data-aos-duration="900">
+                            <img src="./Images/play.svg" alt="" class="item__play">
+                            <h2 class="item__title">GOTHAM</h2>
+                        </div>
+                        <div class="series__item" data-aos="fade-left" data-aos-duration="900">
+                            <img src="./Images/play.svg" alt="" class="item__play">
+                            <h2 class="item__title">The witcher</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__box">
+                <div class="footer__links">
+                    <img src="./Images/google.svg" alt="" class="footer__link">
+                    <img src="./Images/apple.svg" alt="" class="footer__link">
+                </div>
+                <p class="footer__text">© PROWEB. В целях обучения 2021</p>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+</body>
+
+</html>

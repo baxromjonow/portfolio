@@ -8,6 +8,7 @@ const links = [
   ["Faoliyatim", "career"],
   ["Yo‘nalishlar", "skills"],
   ["Media", "media"],
+  ["Loyihalar", "student-projects"],
   ["Aloqa", "contact"],
 ];
 

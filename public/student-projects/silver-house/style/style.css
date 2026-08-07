@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 1140px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.nav_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.nav_logo {
+    text-decoration: none;
+    margin-top: 50px;
+}
+
+.nav_list {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 79px;
+    margin-bottom: 30px;
+}
+
+.nav_link {
+    font-size: 18px;
+    color: #8C8A8A;
+    font-family: Arial;
+    text-decoration: none;
+    margin-bottom: 30px;
+}
+
+.image {
+    margin-bottom: 30px;
+}
+
+.about_box {
+    display: flex;
+    gap: 30px;
+}
+
+.about_left {
+    max-width: 730px;
+    width: 100%;
+    background-color: #F0F0F0;
+    padding: 50px 95px 51px 40px;
+}
+
+.about_title {
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 23.44px;
+    color: #4581B7;
+    margin-bottom: 25px;
+}
+
+.about_text1 {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 27px;
+    color: #808080;
+}
+
+.about_right {
+    max-width: 350px;
+    width: 100%;
+    background-color: #F0F0F0;
+    padding: 50px 24px 0px 40px;
+}
+
+.about_text2 {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 27px;
+    color: #808080;
+}
+.about_text3 {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 27px;
+    color: #808080;
+}
+.about_right_text {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.about_link {
+    color: #808080;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 27px;
+    text-decoration: none;
+    margin-right: 142px;
+}
+
+.footer_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #F0F0F0;
+    margin-top: 30px;
+    padding: 15px 40px;
+}
+
+.tel {
+    font-family: Roboto;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 29.3px;
+    color: #808080;
+    text-decoration: none;
+}
+.footer_tel{
+    display: flex;
+    align-items: end;
+    flex-direction: column;
+    gap: 10px;
+}

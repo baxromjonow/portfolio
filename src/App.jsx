@@ -6,6 +6,7 @@ import Career from "./components/Career";
 import Education from "./components/Education";
 import Skills from "./components/Skills";
 import Media from "./components/Media";
+import StudentProjects from "./components/StudentProjects";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Loader from "./components/Loader";
@@ -31,6 +32,7 @@ export default function App() {
         <Education />
         <Skills />
         <Media />
+        <StudentProjects />
         <Contact />
       </main>
       <Footer />
