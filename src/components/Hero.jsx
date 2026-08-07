@@ -19,7 +19,7 @@ export default function Hero() {
 
       <div className="mx-auto grid min-h-[calc(100vh-7rem)] max-w-7xl items-center gap-10 px-5 py-14 lg:grid-cols-[1.05fr_.95fr] lg:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }}>
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan/20 bg-cyan/5 px-4 py-2 text-xs font-bold uppercase tracking-[.18em] text-cyan">Frontend developer & IT instructor</div>
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan/20 bg-cyan/5 px-4 py-2 text-xs font-bold uppercase tracking-[.18em] text-cyan">Baxromjonov Asadbek • Frontend developer & IT instructor</div>
           <h1 className="font-display text-[clamp(3.2rem,8vw,7.4rem)] font-bold leading-[.9] tracking-[-.065em]">Baxromjonov<br/><span className="text-gradient">Asadbek</span></h1>
           <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">Zamonaviy web texnologiyalarini sodda, amaliy va natijaga yo‘naltirilgan usulda o‘rgataman. O‘quvchilarni real loyihalar yaratadigan frontend dasturchi bo‘lishga tayyorlayman.</p>
           <div className="mt-7 flex flex-wrap gap-3 text-sm text-slate-300">
