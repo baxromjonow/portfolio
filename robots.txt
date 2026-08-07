@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://baxromjonov.uz/sitemap.xml
