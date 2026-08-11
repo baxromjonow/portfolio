@@ -25,6 +25,23 @@ export default async function handler(req, res) {
 
   const data = req.body || {};
 
+  // Spam va suiiste’molni tekshirish uchun server tomonda texnik ma’lumotlar.
+  // IP foydalanuvchining aniq shaxsini yoki uy manzilini ko‘rsatmaydi.
+  const forwardedFor = String(req.headers["x-forwarded-for"] || "");
+  const ip = clean(forwardedFor.split(",")[0] || req.headers["x-real-ip"] || "Noma’lum", 100);
+  const userAgent = clean(req.headers["user-agent"] || "Noma’lum", 500);
+  const country = clean(req.headers["x-vercel-ip-country"] || "Noma’lum", 100);
+  const cityRaw = String(req.headers["x-vercel-ip-city"] || "Noma’lum");
+  let city = cityRaw;
+  try { city = decodeURIComponent(cityRaw); } catch {}
+  city = clean(city, 120);
+  const region = clean(req.headers["x-vercel-ip-country-region"] || "Noma’lum", 120);
+  const now = new Intl.DateTimeFormat("uz-UZ", {
+    timeZone: "Asia/Tashkent",
+    year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", second: "2-digit",
+  }).format(new Date());
+
   // Honeypot: botlar to‘ldiradigan yashirin maydon.
   if (clean(data.website, 200)) {
     return res.status(200).json({ ok: true, message: "Qabul qilindi." });
@@ -58,6 +75,12 @@ export default async function handler(req, res) {
     `📚 <b>Qiziqadigan fanlari:</b>\n${show(fields.subject)}`,
     `💼 <b>Kelajakdagi kasbi:</b>\n${show(fields.job)}`,
     `💬 <b>1-dars haqidagi fikri:</b>\n${show(fields.comment, "Fikr bildirilmagan")}`,
+    "",
+    "🔎 <b>Texnik ma’lumotlar (spam nazorati)</b>",
+    `🌐 <b>IP:</b> ${ip}`,
+    `📍 <b>Taxminiy hudud:</b> ${city}, ${region}, ${country}`,
+    `🕐 <b>Yuborilgan vaqt:</b> ${clean(now, 100)} (Toshkent)`,
+    `💻 <b>Brauzer/qurilma:</b>\n${userAgent}`,
   ].join("\n\n");
 
   try {

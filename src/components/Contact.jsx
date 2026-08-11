@@ -148,6 +148,8 @@ export default function Contact() {
             <span className="mt-2 block text-right text-xs text-slate-500">{form.comment.length}/1200</span>
           </label>
 
+          <p className="mt-4 text-xs leading-5 text-slate-500">Spam va suiiste’molning oldini olish maqsadida so‘rov yuborilganda IP manzil, brauzer/qurilma ma’lumoti, yuborilgan vaqt va IP asosidagi taxminiy hudud kabi texnik ma’lumotlar qayd etilishi mumkin.</p>
+
           <motion.button whileHover={{ scale: 1.006 }} whileTap={{ scale: 0.99 }} disabled={status === "loading"} className="btn-primary submit-shine mt-3 flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl px-6 py-4 font-extrabold transition disabled:opacity-70">
             {status === "loading" ? <LoaderCircle className="animate-spin" size={19} /> : <Send size={18} />}
             {status === "loading" ? "Telegramga yuborilmoqda..." : "So‘rovnomani yuborish"}
