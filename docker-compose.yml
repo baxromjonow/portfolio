@@ -1,0 +1,24 @@
+services:
+  portfolio:
+    build: .
+    image: baxromjonov-portfolio:latest
+    container_name: baxromjonov-portfolio
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      APP_VERSION: "2.0.0"
+    # Standart: faqat serverning o'zidan ochiladi (Cloudflare Tunnel shu portga ulanadi).
+    # LAN'dan ham ochish kerak bo'lsa .env ichida BIND=0.0.0.0 qiling.
+    ports:
+      - "${BIND:-127.0.0.1}:${PORT:-3095}:3000"
+    mem_limit: 256m
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"

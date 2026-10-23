@@ -1,0 +1,9 @@
+node_modules
+dist
+.env
+.git
+*.zip
+backups
+deploy.sh
+rollback.sh
+README.md

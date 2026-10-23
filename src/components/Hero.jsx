@@ -1,51 +1,86 @@
-import { motion } from "framer-motion";
-import { ArrowDown, ArrowUpRight, GraduationCap, Code2, Users } from "lucide-react";
+import { useRef } from "react";
+import { gsap, ScrollTrigger, prefersReduced, scrollToId, useIsoLayoutEffect } from "../lib/motion";
+import { projects } from "../data/projects";
 
-const tech = ["HTML", "CSS", "JavaScript", "React", "Tailwind"];
+const live = projects.filter((p) => p.url).length;
 
-export default function Hero() {
+function Chars({ text }) {
+  return Array.from(text).map((c, i) => (
+    <span className="ch" key={i}><span>{c}</span></span>
+  ));
+}
+
+export default function Hero({ ready }) {
+  const root = useRef(null);
+
+  useIsoLayoutEffect(() => {
+    if (!ready) return undefined;
+    const reduced = prefersReduced();
+    const ctx = gsap.context(() => {
+      if (!reduced) {
+        const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+        tl.from(".hero-l1 .ch > span", { yPercent: 115, duration: 1.1, stagger: 0.045 })
+          .from(".hero-l2 .ch > span", { yPercent: 115, duration: 1.1, stagger: 0.03 }, 0.12)
+          .from(".hero-photo", { clipPath: "inset(100% 0 0 0)", duration: 1.3, ease: "expo.out" }, 0.2)
+          .from(".hero-photo img", { scale: 1.35, duration: 1.6, ease: "expo.out" }, 0.2)
+          .from(".hero-meta > *", { y: 24, autoAlpha: 0, stagger: 0.07, duration: 0.9 }, 0.55);
+      }
+
+      // Scroll: ism ikki tomonga tarqaladi, portret yaqinlashadi.
+      if (!reduced) {
+        const st = { trigger: root.current, start: "top top", end: "bottom top", scrub: true };
+        gsap.to(".hero-l1", { xPercent: -18, ease: "none", scrollTrigger: st });
+        gsap.to(".hero-l2", { xPercent: 14, ease: "none", scrollTrigger: st });
+        gsap.to(".hero-photo", { yPercent: 18, scale: 1.08, ease: "none", scrollTrigger: st });
+        gsap.to(".hero-photo img", { filter: "grayscale(0) contrast(1.05)", ease: "none", scrollTrigger: { ...st, end: "40% top" } });
+        gsap.to(".hero-meta", { autoAlpha: 0, y: -40, ease: "none", scrollTrigger: { ...st, end: "45% top" } });
+      }
+      ScrollTrigger.refresh();
+    }, root);
+    return () => ctx.revert();
+  }, [ready]);
+
   return (
-    <section id="home" className="relative min-h-screen overflow-hidden pt-28">
-      <div className="grid-bg absolute inset-0 -z-20" />
-      <div className="hero-aurora" aria-hidden="true">
-        <span className="hero-aurora-one" />
-        <span className="hero-aurora-two" />
-        <span className="hero-orbit hero-orbit-one" />
-        <span className="hero-orbit hero-orbit-two" />
-        <span className="hero-spark hero-spark-one" />
-        <span className="hero-spark hero-spark-two" />
-        <span className="hero-spark hero-spark-three" />
+    <section className="hero" id="top" ref={root}>
+      <div className="hero-grid" aria-hidden="true" />
+      <h1 className="hero-title">
+        <span className="sr-only">Baxromjonov Asadbek — Frontend developer va IT instructor</span>
+        <span className="hero-l1" aria-hidden="true"><Chars text="ASADBEK" /></span>
+        <span className="hero-photo" aria-hidden="true">
+          <img src="/img/asadbek-hero.webp" alt="" width="900" height="1350" fetchpriority="high" />
+        </span>
+        <span className="hero-l2" aria-hidden="true"><Chars text="BAXROMJONOV" /></span>
+      </h1>
+
+      <div className="hero-meta">
+        <p className="hero-lead">
+          Frontend developer va IT ustoz. Darsda o‘rgataman, kechqurun esa o‘quvchilar va markaz uchun
+          platformalar quraman: <em>darslikdan serverdagi deploygacha.</em>
+        </p>
+        <div className="hero-facts">
+          <div><b>{projects.length}</b><span>loyiha</span></div>
+          <div><b>{live}</b><span>jonli manzil</span></div>
+          <div><b>1</b><span>o‘z serverim</span></div>
+        </div>
+        <div className="hero-cta">
+          <a href="#works" className="btn btn-light" onClick={(e) => { e.preventDefault(); scrollToId("works"); }}>
+            Ishlarni ko‘rish <span aria-hidden="true">↓</span>
+          </a>
+          <a href="#contact" className="btn btn-ghost" onClick={(e) => { e.preventDefault(); scrollToId("contact"); }}>
+            Menga yozish
+          </a>
+        </div>
       </div>
 
-      <div className="mx-auto grid min-h-[calc(100vh-7rem)] max-w-7xl items-center gap-10 px-5 py-14 lg:grid-cols-[1.05fr_.95fr] lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }}>
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan/20 bg-cyan/5 px-4 py-2 text-xs font-bold uppercase tracking-[.18em] text-cyan">Baxromjonov Asadbek • Frontend developer & IT instructor</div>
-          <h1 className="font-display text-[clamp(3.2rem,8vw,7.4rem)] font-bold leading-[.9] tracking-[-.065em]">Baxromjonov<br/><span className="text-gradient">Asadbek</span></h1>
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">Zamonaviy web texnologiyalarini sodda, amaliy va natijaga yo‘naltirilgan usulda o‘rgataman. O‘quvchilarni real loyihalar yaratadigan frontend dasturchi bo‘lishga tayyorlayman.</p>
-          <div className="mt-7 flex flex-wrap gap-3 text-sm text-slate-300">
-            <span className="glass flex items-center gap-2 rounded-xl px-4 py-3"><GraduationCap size={17} className="text-cyan"/>TDTU talabasi</span>
-            <span className="glass flex items-center gap-2 rounded-xl px-4 py-3"><Users size={17} className="text-cyan"/>AL-AZIZ ACADEMY ustozi</span>
-            <span className="glass flex items-center gap-2 rounded-xl px-4 py-3"><Code2 size={17} className="text-cyan"/>Frontend developer</span>
-          </div>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <a href="#media" className="btn-primary flex items-center gap-2 rounded-xl px-6 py-4 font-extrabold transition">Ishlarimni ko‘rish<ArrowUpRight size={18}/></a>
-            <a href="#contact" className="glass rounded-xl px-6 py-4 font-extrabold transition hover:border-cyan/60">Menga yozish</a>
-          </div>
-          <div className="mt-10 flex flex-wrap gap-2">{tech.map((x) => <span key={x} className="rounded-full border border-white/10 px-4 py-2 text-xs font-bold text-slate-400">{x}</span>)}</div>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, scale: .94, y: 18 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: .85, delay: .1 }} className="hero-portrait-shell relative mx-auto w-full max-w-[540px]">
-          <div className="hero-portrait-backdrop" aria-hidden="true" />
-          <div className="hero-portrait-rings" aria-hidden="true"><i/><i/><i/></div>
-          <img src="/asadbek-hero.png" alt="Baxromjonov Asadbek" className="hero-portrait relative z-10 mx-auto w-full object-contain object-bottom" />
-          <div className="glass absolute bottom-4 left-1/2 z-20 grid w-[90%] -translate-x-1/2 grid-cols-3 rounded-2xl p-4 text-center">
-            <div><strong className="text-xl text-cyan">5</strong><span className="block text-[11px] text-slate-400">Texnologiya</span></div>
-            <div className="border-x border-white/10"><strong className="text-xl text-cyan">17+</strong><span className="block text-[11px] text-slate-400">Loyiha</span></div>
-            <div><strong className="text-xl text-cyan">100%</strong><span className="block text-[11px] text-slate-400">Harakat</span></div>
-          </div>
-        </motion.div>
+      <div className="hero-ticker" aria-hidden="true">
+        <div>
+          {Array.from({ length: 2 }).map((_, k) => (
+            <span key={k}>
+              React · Vite · GSAP · Node.js · Next.js · PostgreSQL · Docker · Nginx · Cloudflare Tunnel · Telegram Bots · Figma ·&nbsp;
+            </span>
+          ))}
+        </div>
       </div>
-      <a href="#about" className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full border border-white/15 p-3 text-slate-400"><ArrowDown size={18}/></a>
     </section>
   );
 }

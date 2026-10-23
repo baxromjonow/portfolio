@@ -1,183 +1,170 @@
-import { useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import {
-  AlertCircle,
-  CalendarDays,
-  Check,
-  CheckCircle2,
-  GraduationCap,
-  LoaderCircle,
-  MapPin,
-  MessageCircle,
-  Phone,
-  Send,
-  Sparkles,
-  UserRound,
-  X,
-} from "lucide-react";
+import { useRef, useState } from "react";
+import { gsap, prefersReduced, useIsoLayoutEffect } from "../lib/motion";
+import { socials } from "../data/projects";
 
-const initial = {
-  name: "",
-  birthday: "",
-  school: "",
-  address: "",
-  phone: "",
-  phone2: "",
-  subject: "",
-  job: "",
-  comment: "",
-  website: "",
-};
-
-const fields = [
-  ["name", "Ism va familiya *", "Ali Valiyev", UserRound, { required: true, minLength: 3, maxLength: 100 }],
-  ["birthday", "Tug‘ilgan sana", "", CalendarDays, { type: "date" }],
-  ["school", "Maktab va sinf", "25-maktab, 9-sinf", GraduationCap, { maxLength: 120 }],
-  ["address", "Manzil", "Chinoz tumani", MapPin, { maxLength: 200 }],
-  ["phone", "Telefon raqami *", "+998 90 123 45 67", Phone, { required: true, maxLength: 40, inputMode: "tel" }],
-  ["phone2", "Qo‘shimcha telefon", "+998 90 765 43 21", Phone, { maxLength: 40, inputMode: "tel" }],
-  ["subject", "Qiziqadigan fanlari", "IT, matematika, ingliz tili", Sparkles, { maxLength: 200 }],
-  ["job", "Kelajakdagi kasbi", "Dasturchi", UserRound, { maxLength: 120 }],
+const surveyFields = [
+  ["name", "Ism va familiya", "Ali Valiyev", { required: true, minLength: 3, maxLength: 100, autoComplete: "name" }],
+  ["phone", "Telefon raqami", "+998 90 123 45 67", { required: true, maxLength: 40, inputMode: "tel", autoComplete: "tel" }],
+  ["birthday", "Tug‘ilgan sana", "", { type: "date" }],
+  ["school", "Maktab va sinf", "25-maktab, 9-sinf", { maxLength: 120 }],
+  ["address", "Manzil", "Chinoz tumani", { maxLength: 200 }],
+  ["phone2", "Qo‘shimcha telefon", "+998 90 765 43 21", { maxLength: 40, inputMode: "tel" }],
+  ["subject", "Qiziqadigan fanlari", "IT, matematika, ingliz tili", { maxLength: 200 }],
+  ["job", "Kelajakdagi kasbi", "Dasturchi", { maxLength: 120 }],
 ];
 
+const contactFields = [
+  ["name", "Ismingiz", "Ali Valiyev", { required: true, minLength: 2, maxLength: 100, autoComplete: "name" }],
+  ["phone", "Telefon yoki Telegram", "+998 90 123 45 67 yoki @username", { required: true, maxLength: 60 }],
+];
+
+const empty = { name: "", phone: "", birthday: "", school: "", address: "", phone2: "", subject: "", job: "", comment: "", website: "" };
+
+const icons = {
+  telegram: <path d="M21.5 4.5 2.9 11.7c-1 .4-1 1.6 0 1.9l4.6 1.5 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.4 4.8 3.5c.6.4 1.4.1 1.6-.6l3.2-15.4c.2-.9-.7-1.6-1.6-1.2ZM9.6 14.6l8.4-7.4-6.8 8.6-.3 3.2-1.3-4.4Z" />,
+  channel: <path d="M4 10v4a1 1 0 0 0 1 1h2l5 4V5L7 9H5a1 1 0 0 0-1 1Zm12-2a5 5 0 0 1 0 8m2.5-10.5a8.5 8.5 0 0 1 0 13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />,
+  instagram: <><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" strokeWidth="1.8" /><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="1.8" /><circle cx="17.3" cy="6.7" r="1.1" /></>,
+  github: <path d="M12 2.5a9.5 9.5 0 0 0-3 18.5c.5.1.7-.2.7-.5v-1.7c-2.7.6-3.3-1.2-3.3-1.2-.4-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.3-4.5-1.1-4.5-4.8 0-1.1.4-1.9 1-2.6-.1-.3-.4-1.3.1-2.6 0 0 .8-.3 2.6 1a9 9 0 0 1 4.8 0c1.8-1.3 2.6-1 2.6-1 .5 1.3.2 2.3.1 2.6.6.7 1 1.5 1 2.6 0 3.7-2.3 4.5-4.5 4.8.4.3.7.9.7 1.8v2.7c0 .3.2.6.7.5A9.5 9.5 0 0 0 12 2.5Z" />,
+};
+
+export function SocialIcon({ id }) {
+  return <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">{icons[id]}</svg>;
+}
+
 export default function Contact() {
-  const [form, setForm] = useState(initial);
+  const root = useRef(null);
+  const [mode, setMode] = useState("contact");
+  const [form, setForm] = useState(empty);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
-  const [focused, setFocused] = useState("");
 
-  const completed = useMemo(() => {
-    const keys = ["name", "birthday", "school", "address", "phone", "subject", "job", "comment"];
-    return Math.round((keys.filter((key) => String(form[key]).trim()).length / keys.length) * 100);
-  }, [form]);
+  const fields = mode === "survey" ? surveyFields : contactFields;
+  const change = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
-  const change = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
-
-  async function submit(event) {
-    event.preventDefault();
+  async function submit(e) {
+    e.preventDefault();
     setStatus("loading");
     setError("");
     try {
-      const response = await fetch("/api/send-telegram", {
+      const res = await fetch("/api/send-telegram", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, kind: mode }),
       });
-      const text = await response.text();
-      const data = text ? JSON.parse(text) : {};
-      if (!response.ok || !data.ok) throw new Error(data.message || "Yuborishda xatolik yuz berdi.");
-      setForm(initial);
+      const text = await res.text();
+      let data = {};
+      try { data = text ? JSON.parse(text) : {}; } catch { data = {}; }
+      if (!res.ok || !data.ok) throw new Error(data.message || "Yuborilmadi. Birozdan keyin qayta urinib ko‘ring.");
+      setForm(empty);
       setStatus("success");
-    } catch (submitError) {
-      setError(submitError.message || "Hozir yuborilmadi. Server sozlamalarini tekshiring.");
+    } catch (err) {
+      setError(err.message || "Yuborilmadi. Internet aloqasini tekshiring.");
       setStatus("error");
     }
   }
 
+  useIsoLayoutEffect(() => {
+    if (prefersReduced()) return undefined;
+    const ctx = gsap.context(() => {
+      gsap.from(".ct-big .ch", {
+        yPercent: 120,
+        rotateX: -80,
+        stagger: 0.04,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ".ct-big", start: "top 95%", end: "top 45%", scrub: 0.8 },
+      });
+      gsap.from(".ct-grid > *", {
+        y: 50,
+        autoAlpha: 0,
+        stagger: 0.1,
+        duration: 0.9,
+        scrollTrigger: { trigger: ".ct-grid", start: "top 80%" },
+      });
+    }, root);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="contact" className="relative overflow-hidden py-24 sm:py-28">
-      <div className="contact-orb contact-orb-one" />
-      <div className="contact-orb contact-orb-two" />
+    <section className="contact" id="contact" ref={root}>
+      <div className="wrap">
+        <h2 className="ct-big" aria-label="Gaplashamizmi?">
+          {Array.from("GAPLASHAMIZMI?").map((c, i) => <span className="ch" key={i} aria-hidden="true">{c}</span>)}
+        </h2>
 
-      <div className="relative mx-auto grid max-w-7xl items-stretch gap-7 px-5 lg:grid-cols-[.62fr_1.38fr] lg:px-8">
-        <motion.aside
-          initial={{ opacity: 0, x: -25 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          className="contact-info-card glass flex h-full min-h-[100%] flex-col rounded-[2.2rem] p-6 sm:p-8 lg:p-9"
-        >
-          <div>
-            <div className="section-kicker"><Sparkles size={14} /> O‘quvchi so‘rovnomasi</div>
-            <h2 className="mt-5 text-[clamp(2rem,3.5vw,3.5rem)] font-black leading-[1.03] tracking-[-.045em]">Kelajak sari birinchi <span className="text-gradient">qadam.</span></h2>
-            <p className="mt-5 leading-8 text-slate-400">Ma’lumotlaringiz xavfsiz backend orqali Telegram botga yuboriladi. Javob tez yetib keladi.</p>
+        <div className="ct-grid">
+          <div className="ct-side">
+            <p className="ct-lead">
+              Loyiha, dars yoki hamkorlik bo‘yicha yozing. Xabar to‘g‘ridan-to‘g‘ri Telegramimga keladi.
+            </p>
+            <ul className="ct-socials">
+              {socials.map((s) => (
+                <li key={s.id}>
+                  <a href={s.href} target="_blank" rel="noreferrer noopener">
+                    <SocialIcon id={s.id} />
+                    <span>{s.label}</span>
+                    <em>{s.handle}</em>
+                    <b aria-hidden="true">↗</b>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="mt-8 space-y-4">
-            {["Ma’lumot botga darhol keladi", "Forma to‘ldirish 2 daqiqadan kam", "Telefon raqamingiz ochiq saytda ko‘rinmaydi"].map((item, index) => (
-              <motion.div key={item} initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.08 }} className="flex items-center gap-3 text-sm text-slate-300">
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-cyan/15 bg-cyan/10 text-cyan"><Check size={15} /></span>{item}
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-auto pt-8">
-            <div className="quick-accept-card relative overflow-hidden rounded-[1.7rem] border border-white/10 p-6">
-              <div className="quick-accept-glow" aria-hidden="true" />
-              <div className="telegram-icon relative z-10 grid h-16 w-16 place-items-center rounded-2xl"><Send size={24} /></div>
-              <div className="relative z-10 mt-5">
-                <strong className="block text-xl">Tezkor qabul</strong>
-                <span className="mt-2 block text-sm leading-6 text-slate-400">Yuborilgan so‘rovnoma to‘g‘ridan-to‘g‘ri Telegram guruhiga keladi.</span>
+          <form className="ct-form" onSubmit={submit} noValidate={false}>
+            {status === "success" ? (
+              <div className="ct-ok" role="status">
+                <svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" /><path d="M15 27l7 7 15-16" /></svg>
+                <h3>Yuborildi!</h3>
+                <p>{mode === "survey" ? "So‘rovnoma Telegramga yetib bordi. Rahmat!" : "Xabaringiz yetib bordi. Tez orada javob beraman."}</p>
+                <button type="button" className="btn btn-dark" onClick={() => setStatus("idle")}>Yana yozish</button>
               </div>
-            </div>
-          </div>
-        </motion.aside>
-
-        <motion.form
-          initial={{ opacity: 0, y: 25, scale: 0.99 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          onSubmit={submit}
-          className="form-shell glass relative h-full rounded-[2.2rem] p-5 sm:p-8 lg:p-9"
-        >
-          <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div><p className="text-xs font-bold uppercase tracking-[.2em] text-cyan">Ro‘yxatdan o‘tish</p><h3 className="mt-1 text-2xl font-black">Ma’lumotlarni kiriting</h3></div>
-            <div className="min-w-36">
-              <div className="mb-2 flex justify-between text-xs text-slate-400"><span>To‘ldirildi</span><span>{completed}%</span></div>
-              <div className="h-1.5 overflow-hidden rounded-full bg-white/10"><motion.div animate={{ width: `${completed}%` }} className="h-full rounded-full bg-gradient-to-r from-cyan to-electric" /></div>
-            </div>
-          </div>
-
-          <input className="hidden" tabIndex="-1" autoComplete="off" name="website" value={form.website} onChange={change} />
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {fields.map(([name, label, placeholder, Icon, attrs], index) => (
-              <motion.label key={name} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.03 }} className="group block text-sm font-semibold text-slate-300">
-                <span className="flex items-center gap-2"><Icon size={15} className={focused === name ? "text-cyan" : "text-slate-500"} />{label}</span>
-                <div className="relative mt-2">
-                  <input {...attrs} name={name} value={form[name]} onChange={change} onFocus={() => setFocused(name)} onBlur={() => setFocused("")} placeholder={placeholder} />
-                  <AnimatePresence>{form[name] && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400"><CheckCircle2 size={17} /></motion.span>}</AnimatePresence>
+            ) : (
+              <>
+                <div className="ct-tabs" role="tablist" aria-label="Forma turi">
+                  <button type="button" role="tab" aria-selected={mode === "contact"} className={mode === "contact" ? "on" : ""} onClick={() => setMode("contact")}>Xabar yozish</button>
+                  <button type="button" role="tab" aria-selected={mode === "survey"} className={mode === "survey" ? "on" : ""} onClick={() => setMode("survey")}>O‘quvchi so‘rovnomasi</button>
                 </div>
-              </motion.label>
-            ))}
-          </div>
 
-          <label className="mt-4 block text-sm font-semibold text-slate-300">
-            <span className="flex items-center gap-2"><MessageCircle size={15} className={focused === "comment" ? "text-cyan" : "text-slate-500"} />1-dars haqidagi fikri</span>
-            <textarea maxLength="1200" name="comment" value={form.comment} onChange={change} onFocus={() => setFocused("comment")} onBlur={() => setFocused("")} rows="5" className="mt-2 resize-none" placeholder="Dars haqida fikringiz..." />
-            <span className="mt-2 block text-right text-xs text-slate-500">{form.comment.length}/1200</span>
-          </label>
+                <input className="hp" tabIndex={-1} autoComplete="off" name="website" value={form.website} onChange={change} aria-hidden="true" />
 
-          <p className="mt-4 text-xs leading-5 text-slate-500">Spam va suiiste’molning oldini olish maqsadida so‘rov yuborilganda IP manzil, brauzer/qurilma ma’lumoti, yuborilgan vaqt va IP asosidagi taxminiy hudud kabi texnik ma’lumotlar qayd etilishi mumkin.</p>
+                <div className={`ct-fields is-${mode}`}>
+                  {fields.map(([name, label, ph, attrs]) => (
+                    <label key={`${mode}-${name}`} className="fld">
+                      <span>{label}{attrs.required ? " *" : ""}</span>
+                      <input id={`f-${mode}-${name}`} name={name} value={form[name]} onChange={change} placeholder={ph} {...attrs} />
+                    </label>
+                  ))}
+                  <label className="fld wide">
+                    <span>{mode === "survey" ? "1-dars haqidagi fikringiz" : "Xabar *"}</span>
+                    <textarea
+                      id={`f-${mode}-comment`}
+                      name="comment"
+                      rows={mode === "survey" ? 3 : 5}
+                      maxLength={1200}
+                      required={mode === "contact"}
+                      value={form.comment}
+                      onChange={change}
+                      placeholder={mode === "survey" ? "Dars sizga yoqdimi?" : "Salom! Menga ... kerak edi"}
+                    />
+                  </label>
+                </div>
 
-          <motion.button whileHover={{ scale: 1.006 }} whileTap={{ scale: 0.99 }} disabled={status === "loading"} className="btn-primary submit-shine mt-3 flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl px-6 py-4 font-extrabold transition disabled:opacity-70">
-            {status === "loading" ? <LoaderCircle className="animate-spin" size={19} /> : <Send size={18} />}
-            {status === "loading" ? "Telegramga yuborilmoqda..." : "So‘rovnomani yuborish"}
-          </motion.button>
+                {mode === "survey" && (
+                  <p className="ct-note">
+                    Spamning oldini olish uchun yuborish vaqti, brauzer turi va IP manzil qayd etiladi. Telefon raqamingiz saytda ko‘rinmaydi.
+                  </p>
+                )}
 
-          <AnimatePresence>
-            {status === "error" && <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mt-4 flex items-start gap-2 rounded-xl border border-red-400/20 bg-red-500/10 p-3 text-sm text-red-300"><AlertCircle className="mt-0.5 shrink-0" size={18} />{error}</motion.p>}
-          </AnimatePresence>
-        </motion.form>
+                <button className="btn btn-dark ct-send" disabled={status === "loading"}>
+                  {status === "loading" ? "Yuborilmoqda…" : mode === "survey" ? "So‘rovnomani yuborish" : "Xabarni yuborish"}
+                  <span aria-hidden="true">→</span>
+                </button>
+                {status === "error" && <p className="ct-err" role="alert">{error}</p>}
+              </>
+            )}
+          </form>
+        </div>
       </div>
-
-      <AnimatePresence>
-        {status === "success" && (
-          <motion.div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/85 px-5 backdrop-blur-xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <div className="confetti" aria-hidden="true">{Array.from({ length: 22 }).map((_, i) => <i key={i} style={{ "--i": i }} />)}</div>
-            <motion.div initial={{ scale: 0.68, opacity: 0, y: 45 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.82, opacity: 0 }} transition={{ type: "spring", stiffness: 220, damping: 17 }} className="success-card glass relative w-full max-w-md overflow-hidden rounded-[2.2rem] p-9 text-center">
-              <button type="button" onClick={() => setStatus("idle")} className="absolute right-4 top-4 rounded-full p-2 text-slate-400 transition hover:bg-white/10 hover:text-white"><X size={20} /></button>
-              <motion.div initial={{ scale: 0, rotate: -120 }} animate={{ scale: 1, rotate: 0 }} transition={{ delay: 0.12, type: "spring" }} className="success-check mx-auto grid h-28 w-28 place-items-center rounded-full text-emerald-300"><CheckCircle2 size={62} /></motion.div>
-              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                <p className="mt-7 text-xs font-bold uppercase tracking-[.28em] text-emerald-300">Xabar yuborildi</p>
-                <h3 className="mt-2 text-3xl font-black text-white">Tabriklaymiz!</h3>
-                <p className="mt-3 leading-7 text-slate-300">Siz muvaffaqiyatli ro‘yxatdan o‘tdingiz. Ma’lumotlaringiz Telegram botga yetkazildi.</p>
-                <button type="button" onClick={() => setStatus("idle")} className="btn-primary mt-7 w-full rounded-2xl px-6 py-4 font-extrabold">Ajoyib, yopish</button>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }
