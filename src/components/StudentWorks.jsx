@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { gsap, prefersReduced, useIsoLayoutEffect } from "../lib/motion";
+import { gsap, prefersReduced, useIsoLayoutEffect, MOTION_ENABLED } from "../lib/motion";
 import { studentProjects } from "../data/projects";
 
 const SPEED = 70; // px/s
@@ -29,7 +29,8 @@ export default function StudentWorks() {
   const run = useCallback(() => {
     stop();
     setProgress(0);
-    if (paused || !inView) return;
+    // VAQTINCHA: animatsiyalar o'chiq — avtomatik aylantirish yo'q.
+    if (paused || !inView || !MOTION_ENABLED) return;
     const f = frame.current;
     let win;
     let doc;

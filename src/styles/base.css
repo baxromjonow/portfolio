@@ -472,7 +472,7 @@ button {
   font-weight: 700;
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media all /* MOTION OFF: asli (prefers-reduced-motion: reduce) */ {
   *,
   *::before,
   *::after {

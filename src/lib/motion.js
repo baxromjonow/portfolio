@@ -8,8 +8,13 @@ gsap.defaults({ ease: "power3.out" });
 
 export { gsap, ScrollTrigger };
 
+// VAQTINCHA: barcha animatsiyalar o'chirilgan. Qaytarish uchun `true` qiling
+// va CSS dagi "MOTION OFF" belgili media querylarni asliga qaytaring.
+export const MOTION_ENABLED = false;
+
 export const prefersReduced = () =>
-  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  !MOTION_ENABLED ||
+  (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
 export const isTouch = () =>
   typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;

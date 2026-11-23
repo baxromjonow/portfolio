@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { gsap, prefersReduced, useIsoLayoutEffect } from "../lib/motion";
+import { gsap, prefersReduced, useIsoLayoutEffect, MOTION_ENABLED } from "../lib/motion";
 
 // To'lqinli doira chiziladi, hisoblagich 0→100, keyin parda ochiladi.
 // Ikkinchi tashrifda (shu sessiyada) qisqa variant ishlaydi — zeriktirmaydi.
@@ -23,6 +23,12 @@ export default function Loader({ onDone }) {
   const [gone, setGone] = useState(false);
 
   useIsoLayoutEffect(() => {
+    // VAQTINCHA: animatsiyalar o'chiq — loader umuman ko'rsatilmaydi.
+    if (!MOTION_ENABLED) {
+      setGone(true);
+      onDone?.();
+      return undefined;
+    }
     let seen = false;
     try {
       seen = sessionStorage.getItem("bw-seen") === "1";

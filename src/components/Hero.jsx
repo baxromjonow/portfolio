@@ -47,7 +47,7 @@ export default function Hero({ ready }) {
         <span className="sr-only">Baxromjonov Asadbek — Frontend developer va IT instructor</span>
         <span className="hero-l1" aria-hidden="true"><Chars text="ASADBEK" /></span>
         <span className="hero-photo" aria-hidden="true">
-          <img src="/img/asadbek-hero.webp" alt="" width="900" height="1350" fetchpriority="high" />
+          <img src="/img/asadbek-hero.webp" alt="" width="672" height="896" fetchpriority="high" />
         </span>
         <span className="hero-l2" aria-hidden="true"><Chars text="BAXROMJONOV" /></span>
       </h1>
